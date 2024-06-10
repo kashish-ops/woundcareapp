@@ -12,14 +12,14 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/s3")
-public class S3Controller {
+public class S3Service {
 
     private final AmazonS3 s3Client;
 
     @Value("${woundcare}")
     private String bucketName;
 
-    public S3Controller(AmazonS3 s3Client) {
+    public S3Service(AmazonS3 s3Client) {
         this.s3Client = s3Client;
     }
 
