@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'aws_s3_service.dart';
+import 'services/s3_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 

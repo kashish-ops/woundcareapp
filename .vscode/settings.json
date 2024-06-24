@@ -1,0 +1,8 @@
+{
+    "dart.showTodos": false,
+    "java.project.sourcePaths": [
+        ""
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic"
+}

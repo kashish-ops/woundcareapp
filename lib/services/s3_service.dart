@@ -6,7 +6,7 @@ class S3Service {
   final String bucketName;
   final String region;
 
-  late S3Client s3Client;
+  late AwsS3Client s3Client;
 
   S3Service({
     required this.accessKey,
@@ -14,7 +14,7 @@ class S3Service {
     required this.bucketName,
     required this.region,
   }) {
-    s3Client = S3Client(
+    s3Client = AwsS3Client(
       region: region,
       accessKey: accessKey,
       secretKey: secretKey,
