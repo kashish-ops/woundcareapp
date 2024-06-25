@@ -1,5 +1,6 @@
 import 'package:flutter_aws_s3_client/flutter_aws_s3_client.dart';
 // import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:simple_s3/simple_s3.dart';
 
 class S3Service {
   final String accessKey;
@@ -23,7 +24,7 @@ class S3Service {
     );
   }
 
-  Future<String> uploadFile(String filePath, String fileName) async {
+  /*Future<String> uploadFile(String filePath, String fileName) async {
     try {
       final response = await s3Client.uploadFile(
         filePath,
@@ -43,5 +44,5 @@ class S3Service {
     } catch (e) {
       throw Exception('Error downloading file: $e');
     }
-  }
+  }*/
 }

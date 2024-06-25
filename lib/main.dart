@@ -35,16 +35,16 @@ class MyApp extends StatelessWidget {
                   final filePath = 'Users/kashish/Documents/woundcare/test.txt';
                   final file = File(filePath);
                   await file.writeAsString('Hello, AWS S3!');
-                  final fileUrl = await s3Service.uploadFile(filePath, 'example.txt');
-                  print('File uploaded: $fileUrl');
+                  //final fileUrl = await s3Service.uploadFile(filePath, 'example.txt');
+                  //print('File uploaded: $fileUrl');
                 },
                 child: Text('Upload File'),
               ),
               ElevatedButton(
                 onPressed: () async {
                   final directory = await getApplicationDocumentsDirectory();
-                  final downloadPath = 'Users/kashish/Documents/woundcare/test.txt';
-                  await s3Service.downloadFile('test.txt', downloadPath);
+                  final downloadPath = 'Users/ash/Documents/test.txt';
+                  //await s3Service.downloadFile('test.txt', downloadPath);
                   final file = File(downloadPath);
                   final contents = await file.readAsString();
                   print('File downloaded: $contents');
