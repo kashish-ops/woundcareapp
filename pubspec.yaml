@@ -1,0 +1,8 @@
+# contains necessary dependencies for application
+name: woundcare_app
+description: A new Flutter application for woundcare app.
+dependencies: 
+  flutter: 
+    sdk: flutter
+  file_picker: ^4.0.0
+  dio: ^4.0.0
