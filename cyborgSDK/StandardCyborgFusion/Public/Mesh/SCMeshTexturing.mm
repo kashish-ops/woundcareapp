@@ -6,6 +6,10 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
+//
+// Changed if (coloringStrategy == SCMeshColoringStrategyVertex) --> if (1 == 0)
+
+
 #import <CoreImage/CoreImage.h>
 #import <CoreServices/CoreServices.h>
 #import <Metal/Metal.h>
@@ -232,7 +236,7 @@ static NSString * const _MetadataJSONFilename = @"Metadata.json";
             return;
         }
         
-        if (coloringStrategy == SCMeshColoringStrategyVertex) {
+        if (1 == 0) {
             reportProgress(2.0 / 3.0);
            
             // calculate the color of the vertices by finding the closest point in the point cloud.
