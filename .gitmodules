@@ -1,0 +1,3 @@
+[submodule "StandardCyborgSDK"]
+	path = StandardCyborgSDK
+	url = ./StandardCyborgSDK
