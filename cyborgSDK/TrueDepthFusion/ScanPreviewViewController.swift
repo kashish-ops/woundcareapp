@@ -6,6 +6,16 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
+
+//------------------\\
+//   Ashley Edits   \\
+//------------------\\
+// Changed _quickLookUSDZURL --> _quickLookOBJURL
+// Changed tempUSDZPath --> tempOBJPath
+// Changed mesh.writeToUSDZ(atPath: tempUSDZPath) --> mesh.writeToOBJZip(atPath: tempOBJPath)
+// Changed _shouldExportToUSDZ --> _shouldExportToOBJ
+
+
 import Foundation
 import ModelIO
 import QuickLook
@@ -21,20 +31,20 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
     @IBOutlet private weak var meshButton: UIButton!
     @IBOutlet private weak var meshingProgressContainer: UIView!
     @IBOutlet private weak var meshingProgressView: UIProgressView!
-    private var _quickLookUSDZURL: URL?
+    private var _quickLookOBJURL: URL?
     
     @IBAction private func _export(_ sender: AnyObject) {
         if let scan = scan {
             let shareURL: URL?
             
-            if _shouldExportToUSDZ {
+            if _shouldExportToOBJ {
                 if let mesh = _mesh {
-                    let tempUSDZPath = NSTemporaryDirectory().appending("/mesh.usdc")
+                    let tempOBJPath = NSTemporaryDirectory().appending("/mesh.zip")
                     
-                    try? FileManager.default.removeItem(atPath: tempUSDZPath)
-                    mesh.writeToUSDC(atPath: tempUSDZPath)
+                    try? FileManager.default.removeItem(atPath: tempOBJPath)
+                    mesh.writeToOBJZip(atPath: tempOBJPath)
                     
-                    shareURL = URL(fileURLWithPath: tempUSDZPath)
+                    shareURL = URL(fileURLWithPath: tempOBJPath)
                 } else {
                     shareURL = scan.writeUSDZ()
                 }
@@ -45,7 +55,7 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
             }
             
             if let shareURL = shareURL {
-                _quickLookUSDZURL = shareURL
+                _quickLookOBJURL = shareURL
                 // let controller = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
                 // controller.popoverPresentationController?.sourceView = sender as? UIView
                 // present(controller, animated: true, completion: nil)
@@ -64,7 +74,7 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
     }
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        return _quickLookUSDZURL! as QLPreviewItem
+        return _quickLookOBJURL! as QLPreviewItem
     }
     
     @IBAction private func _delete(_ sender: Any) {
@@ -161,7 +171,7 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
     // MARK: - Private
     
     private let _appDelegate = UIApplication.shared.delegate! as! AppDelegate
-    private let _shouldExportToUSDZ = true
+    private let _shouldExportToOBJ = true
     private var _shouldCancelMeshing = false
     private var _meshURL: URL?
     private var _mesh: SCMesh?
