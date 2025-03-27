@@ -14,6 +14,11 @@
 // Changed tempUSDZPath --> tempOBJPath
 // Changed mesh.writeToUSDZ(atPath: tempUSDZPath) --> mesh.writeToOBJZip(atPath: tempOBJPath)
 // Changed _shouldExportToUSDZ --> _shouldExportToOBJ
+// Imported SwiftUI
+
+// Ashley Notes:
+// TODO: Check if I can send "dataSource" to Email View.
+// TODO: Find object from shareURL.
 
 
 import Foundation
@@ -22,6 +27,8 @@ import QuickLook
 import StandardCyborgFusion
 import SceneKit
 import UIKit
+import MessageUI
+import SwiftUI
 
 class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource {
     
@@ -41,7 +48,7 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
                 if let mesh = _mesh {
                     let tempOBJPath = NSTemporaryDirectory().appending("/mesh.zip")
                     
-                    try? FileManager.default.removeItem(atPath: tempOBJPath)
+                    try? FileManager.default.removeItem(atPath: tempOBJPath) // TODO: TRY REMOVING
                     mesh.writeToOBJZip(atPath: tempOBJPath)
                     
                     shareURL = URL(fileURLWithPath: tempOBJPath)
@@ -59,13 +66,38 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
                 // let controller = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
                 // controller.popoverPresentationController?.sourceView = sender as? UIView
                 // present(controller, animated: true, completion: nil)
-                let controller = QLPreviewController()
+                
+                // Original SCSDK Version
+                /*let controller = QLPreviewController()
                 controller.dataSource = self
                 controller.modalPresentationStyle = .overFullScreen
-                self.present(controller, animated: true, completion: nil)
+                self.present(controller, animated: true, completion: nil)*/
+                
+                // Ashley 1st approach did not work:
+                /*let segueIdentifier = "SendEmailController"
+                performSegue(withIdentifier: segueIdentifier, sender: shareURL)*/
+                
+                // Ashley 2nd approach:
+                // Create a SwiftUI View with the URL passed in
+                let emailView = SendEmailController(zipFileURL: shareURL)
+                let emailController = UIHostingController(rootView: emailView)
+                // Present the email view using a UIHostingController
+                self.present(emailController, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
+    // Function added by me:
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SendEmailController" {
+            if let emailController = segue.destination as? SendEmailController.MailComposeViewController,
+               let shareURL = sender as? URL {
+                emailController.zipFileURL = shareURL
             }
         }
     }
+    
     
     // MARK: - QLPreviewControllerDataSource
     
@@ -83,6 +115,13 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
     
     @IBAction private func _done(_ sender: Any) {
         doneHandler?()
+    }
+    
+    @IBAction private func _emailScan(_ sender: UIButton) {
+        // Ashley Edit
+        // TODO: Need to add actual button to View
+        let segueIdentifier = "SendEmailController"
+        performSegue(withIdentifier: segueIdentifier, sender: nil)
     }
     
     @IBAction private func _runMeshing(_ sender: Any) {
@@ -129,10 +168,13 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
                         node.transform = self._pointCloudNode?.transform ?? SCNMatrix4Identity
                         self._pointCloudNode = node
                         self._mesh = mesh
+                        self._export(mesh)
                     }
                 }
+                // Here?
             }
         )
+        // Here?
     }
     
     @IBAction private func cancelMeshing(_ sender: Any) {
@@ -172,6 +214,7 @@ class ScanPreviewViewController: UIViewController, QLPreviewControllerDataSource
     
     private let _appDelegate = UIApplication.shared.delegate! as! AppDelegate
     private let _shouldExportToOBJ = true
+    private let _shouldSendScan = true // Ashley Edit
     private var _shouldCancelMeshing = false
     private var _meshURL: URL?
     private var _mesh: SCMesh?
